@@ -146,20 +146,37 @@ public boolean buildClass() {
 
     String className = new String();
     String assessmentNumber = "";
+    String[] assessSanitized;
     System.out.println("REACHED****");
    // Scanner classInfo = new Scanner(System.in);
    //inScan = new Scanner(System.in);
    Console console = System.console();
    if(console==null) {
-       
+       assessSanitized = null;
    }else{
        className = console.readLine("Enter classname: ");
        System.out.println(className);
        assessmentNumber = console.readLine("Enter assessment categories, seperated by commas (eg. quizzes, midterm, final):");
        System.out.println(assessmentNumber);            //now sanitize this by removing spaces
-       this.sanitize(assessmentNumber);
+      assessSanitized= this.sanitize(assessmentNumber);
+
+      LinkedList classLinkedList  = new LinkedList();
+
+    for(int i = 0; i<assessSanitized.length; i++) {
+        try{
+        String weight = console.readLine("Enter percentage weight for " + assessSanitized[i] + ": ");
+        classLinkedList.addToListEnd(assessSanitized[i], Double.valueOf(weight));
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+
+        //now use this to associate each weight to a assessment   ---- build the linked list!
+    }
 
    }
+
+   
    /* System.out.println("\n" + "Enter name of class: ");
     //String className = "";
     try{
@@ -184,6 +201,7 @@ public void adminClose() {
 public String[] sanitize(String toSanitize) {
     int commaCount = 0;
     String assign = "";
+    /*
     for(int i = 0; i<toSanitize.length(); i++) {
        // assign += toSanitize.charAt(i);
         if(toSanitize.charAt(i)==44){
@@ -192,11 +210,79 @@ public String[] sanitize(String toSanitize) {
         else if(toSanitize.charAt(i)!= 32){
         assign += toSanitize.charAt(i);
         }
+    } */
+
+    for(int i = 0; i<toSanitize.length(); i++) {
+        if(toSanitize.charAt(i)==44){
+            commaCount++;
+        }
     }
 
-    String[] assessments = new String[commaCount];          //change to linked list or stack, etc. so you can assign weight to each node... **************************
+    String[] assessments = new String[commaCount+1];          //change to linked list or stack, etc. so you can assign weight to each node... **************************
 
-    System.out.println(commaCount + " " + assign);
+   /* int i = 0;
+    
+    while(toSanitize.charAt(i)!=44 && toSanitize.charAt(i)!= 32) {
+        assign += toSanitize.charAt(i);
+        i++;
+    }*/
+
+    int i = 0;
+    boolean switched = false;
+    boolean switchedTwo = true;
+
+    
+    double arrayFilled = 0;
+    while(i<toSanitize.length()) {
+                boolean spaceBool = false;
+                boolean commaBool = false;
+        if(toSanitize.charAt(i) == 32 || toSanitize.charAt(i)== 44) {
+            i++;
+            if(toSanitize.charAt(i)==32) {
+                spaceBool = true;
+            }
+            else {
+                commaBool = true;
+            }
+            
+            if(spaceBool) {
+                System.out.println(" ASSIGN IS CURRENTLY: " +assign);
+                assessments[(int)arrayFilled] = assign;
+                arrayFilled++;
+                System.out.println("HERERERERERERERERERERER");
+            }
+           /* switched = true;
+           
+
+            if(switched && arrayFilled==0) {
+                assessments[(int)arrayFilled] = assign;
+                arrayFilled++;
+                switchedTwo = false;
+            }
+            else if (switched){
+                assessments[(int)arrayFilled] = assign;
+                arrayFilled++;
+                switched = false;
+            }*/
+            /*
+            assessments[(int)arrayFilled] = assign;
+            arrayFilled++;
+            arrayFilled *= 0.5;
+            */
+            System.out.println(assign);
+            assign = "";
+        }
+        else{
+            assign += toSanitize.charAt(i);
+            i++;
+        }
+    }
+    assessments[(int)arrayFilled] = assign;
+
+    System.out.println(commaCount + " " + assign + " " + arrayFilled );
+    for(int k = 0; k<assessments.length;k++) {
+        System.out.print(assessments[k]);
+    }
 
     return assessments;
 }
