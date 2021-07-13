@@ -160,7 +160,7 @@ public boolean buildClass() {
        System.out.println(assessmentNumber);            //now sanitize this by removing spaces
       assessSanitized= this.sanitize(assessmentNumber);
 
-      LinkedList classLinkedList  = new LinkedList();
+      LinkedList classLinkedList  = new LinkedList();                   //move to tree so that it can be titled? otherwise, how do you know its for the specific course?
 
     for(int i = 0; i<assessSanitized.length; i++) {
         try{
@@ -169,6 +169,8 @@ public boolean buildClass() {
         }catch(Exception e) {
             e.printStackTrace();
         }
+
+        classLinkedList.PrintList();
         
 
         //now use this to associate each weight to a assessment   ---- build the linked list!
