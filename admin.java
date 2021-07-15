@@ -171,9 +171,11 @@ public boolean buildClass() {
         }
 
         classLinkedList.PrintList();
+
+        this.insertSQL(classLinkedList, className);
         
 
-        //now use this to associate each weight to a assessment   ---- build the linked list!
+        //now use this to associate each weight to a assessment   ---- build the linked list!       \\built!
     }
 
    }
@@ -304,4 +306,9 @@ File output report card for individual person
 
 
 */
+
+public void insertSQL(LinkedList toInsert, String className) {
+    connection.createClassTable(toInsert, className);
+}
+
 }
