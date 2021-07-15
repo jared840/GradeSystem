@@ -60,6 +60,16 @@ public class LinkedList {
         }
     }
 
+    public String getAssessString(int pos) {
+        current = head;
+        int i = 0;
+        while(i<pos) {
+            current = current.next();
+            i++;
+        }
+        return current.getAssessment();
+    }
+
 
    
 }
