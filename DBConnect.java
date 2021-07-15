@@ -13,6 +13,7 @@ public class DBConnect {
     private Connection DBConnection;
     public static boolean DBExists;
     private static String DBPrivilege;
+    private boolean resetted;
 
     public DBConnect() {
         //SQLLogIn = readSQLAccess();
@@ -154,6 +155,7 @@ public class DBConnect {
 
     public void resetDBURL() {
         this.setDBUrl(this.getDBUrl() + "GRADESYSTEM");
+        this.setResetted(true);
         
         try{
             DBConnection.close();   //close previous connection
@@ -209,6 +211,51 @@ public class DBConnect {
     }
     public String getDBPrivilege() {
         return DBPrivilege;
+    }
+
+    public void setResetted(boolean bool) {
+        this.resetted = bool;
+    }
+    public boolean getResetted() {
+        return this.resetted;
+    }
+
+    public void createClassTable(LinkedList toInsert, String className) {
+
+        if(this.getResetted()==false){
+            this.resetDBURL();
+        }
+
+        try{
+            String toCreate = "CREATE TABLE IF NOT EXISTS " + className + " " + "(id INTEGER not NULL, ";
+            int linkSize = toInsert.getSize();
+          /*  String[] assess = new String[linkSize];
+            for(int i = 0; i<linkSize && i<assess.length; i++) {
+                assess[i] = toInsert.getAssessString(i);
+                System.out.println("     ______" + assess[i]);
+            }*/
+            for(int i = 0; i<linkSize; i++) {
+            toCreate+= toInsert.getAssessString(i);
+            toCreate += " VARCHAR(255), ";
+            }
+            toCreate += " PRIMARY KEY (id))";
+
+            System.out.println("******************" + "\n" + toCreate);
+            //String toooo = "CREATE TABLE IF NOT EXISTS className2 (id INTEGER not NULL, quiz VARCHAR(255), final VARCHAR(255), midterm VARCHAR(255),  PRIMARY KEY (id))";
+            String toInsertSQL = toCreate;
+
+            /* *******************************************************
+
+                    LEFT OFF HERE !!!!!
+                    For some reason this string creates DB table up to quiz, yet when you copy the string from the cmd line printed out and run it it creates full DB Table? Why?
+
+                    */
+            Statement s1 = DBConnection.createStatement();
+            s1.executeUpdate(toInsertSQL);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
     
     
